@@ -13,5 +13,5 @@ end)
 VORPInv.RegisterUsableItem("soap", function(data)
     local source = data.source
     TriggerClientEvent("wash", source)
-    VORPInv.subItem(source, 'washcloth', 1)
+    VORPInv.subItem(source, 'soap', 1)
 end)
