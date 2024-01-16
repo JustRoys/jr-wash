@@ -25,6 +25,8 @@ RegisterNetEvent("wash", function()
     ClearPedEnvDirt(PlayerPedId())
     ClearPedBloodDamage(PlayerPedId())
     ClearPedDamageDecalByZone(PlayerPedId(), 10, "ALL")
-    TriggerEvent("Outsider_needs:Client:ClearDirt")
+    if Config.Outsiderneeds then
+        TriggerEvent("Outsider_needs:Client:ClearDirt")
+    end
     ClearPedTasks(ped)
 end)
