@@ -2,16 +2,12 @@ TriggerEvent("getCore",function(core)
     VorpCore = core
 end)
 
-local VORPInv = exports.vorp_inventory:vorp_inventoryApi()
+local VorpInv = exports.vorp_inventory:vorp_inventoryApi()
 
-VORPInv.RegisterUsableItem("washcloth", function(data)
-    local source = data.source
-    TriggerClientEvent("wash", source)
-    VORPInv.subItem(source, 'washcloth', 1)
-end)
-
-VORPInv.RegisterUsableItem("soap", function(data)
-    local source = data.source
-    TriggerClientEvent("wash", source)
-    VORPInv.subItem(source, 'soap', 1)
-end)
+for k,v in pairs(Config.WashItems) do
+    VorpInv.RegisterUsableItem(Config.WashItems[k], function(data)
+        VorpInv.CloseInv(data.source)
+        VorpInv.subItem(data.source, Config.WashItems[k], 1)
+        TriggerClientEvent("wash", data.source)
+    end)
+end
