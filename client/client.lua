@@ -1,7 +1,3 @@
-TriggerEvent("getCore",function(core)
-    VorpCore = core
-end)
-
 function PlayAnimation(ped, dict, name)
     if not DoesAnimDictExist(dict) then
         return
@@ -14,18 +10,18 @@ function PlayAnimation(ped, dict, name)
     RemoveAnimDict(dict)
 end
 
-RegisterNetEvent("wash", function()
+RegisterNetEvent("jr-wash:client:wash", function()
     local ped = PlayerPedId()
-    if IsPedMale(PlayerPedId()) then 
+    if IsPedMale(ped) then
         PlayAnimation(ped, "mp_amb_player@prop_player_wash_face_barrel@sober@male_a@base", "base")
     else
         PlayAnimation(ped, "amb_misc@world_human_wash_face_bucket@table@female_a@idle_d", "idle_j")
     end
     Wait(2000)
-    ClearPedEnvDirt(PlayerPedId())
-    ClearPedBloodDamage(PlayerPedId())
-    ClearPedDamageDecalByZone(PlayerPedId(), 10, "ALL")
-    if Config.Outsiderneeds then
+    ClearPedEnvDirt(ped)
+    ClearPedBloodDamage(ped)
+    ClearPedDamageDecalByZone(ped, 10, "ALL")
+    if Config.OutsiderNeeds then
         TriggerEvent("Outsider_needs:Client:ClearDirt")
     end
     ClearPedTasks(ped)
