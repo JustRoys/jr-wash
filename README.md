@@ -1,5 +1,7 @@
 # JR-Wash
- Wash yourself with items in RedM  Make sure to add the items into you database, see server.lua.
+![jrwash](https://i.imgur.com/5n9GEeL.png)
+
+Wash yourself with items in RedM  Make sure to add the items into you database, see server.lua.
 
 # Description:
 Are you tired of all the dirt from Valentine, or anywhere else? Go use this!
