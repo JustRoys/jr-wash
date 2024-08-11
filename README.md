@@ -1,7 +1,12 @@
 # JR-Wash
 ![jrwash](https://i.imgur.com/5n9GEeL.png)
-
-Wash yourself with items in RedM  Make sure to add the items into you database, see server.lua.
+---
+<p align="center">
+  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/JustRoys/jr-wash">
+  <img alt="Downloads" src="https://img.shields.io/github/downloads/JustRoys/jr-wash/total">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/JustRoys/jr-wash">
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/JustRoys/jr-wash">
+</p>
 
 # Description:
 Are you tired of all the dirt from Valentine, or anywhere else? Go use this!
