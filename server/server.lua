@@ -55,10 +55,13 @@ for index, value in ipairs(Config.WashItems) do
 
             TriggerClientEvent("jr-wash:client:wash", _source)
         else
-            exports.vorp_inventory:subItem(_source, value, 1)
+            if Config.RemoveItem then
+                exports.vorp_inventory:subItem(_source, value, 1)
+            end
+
             TriggerClientEvent("jr-wash:client:wash", _source)
 
-            if Config.Durability.NotifyBroken then
+            if Config.Durability.Enable and Config.Durability.NotifyBroken then
                 TriggerClientEvent("vorp:TipRight", _source, T.Broke, 6000)
             end
         end

@@ -3,9 +3,6 @@ local Core = exports.vorp_core:GetCore()
 local buttons_prompt = GetRandomIntInRange(0, 0xffffff)
 local Wash
 
-local peds = {}
-local blips = {}
-
 local T = Translation.Langs[Config.Language]
 
 -- Prompt setup
@@ -19,18 +16,6 @@ function WashPrompt()
     PromptSetGroup(Wash, buttons_prompt)
     PromptRegisterEnd(Wash)
 end
-
---[[ function StartOpenMenuPrompt()
-    -- Button Menu
-    OpenMenu = Citizen.InvokeNative(0x04F97DE45A519419)
-    PromptSetControlAction(OpenMenu, Config.Keys.OpenMenuKey)
-    PromptSetText(OpenMenu, CreateVarString(10, 'LITERAL_STRING', T.OpenMenu))
-    PromptSetEnabled(OpenMenu, true)
-    PromptSetVisible(OpenMenu, true)
-    PromptSetHoldMode(OpenMenu, true)
-    PromptSetGroup(OpenMenu, buttons_prompt)
-    PromptRegisterEnd(OpenMenu)
-end ]]
 
 -- Animations
 function PlayAnimation(ped, dict, name)
@@ -124,56 +109,3 @@ if Config.UseProps then
         end
     end)
 end
-
--- Blips & NPC
---[[ Citizen.CreateThread(function()
-    Citizen.Wait(1000)
-	for k, v in pairs(Config.BathLocations) do
-        -- Blip
-        if v.Blip.ShowBlip then
-		    local blip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.Blip.Position.x, v.Blip.Position.y, v.Blip.Position.z)
-    	    SetBlipSprite(blip, v.Blip.BlipSprite)
-    	    SetBlipScale(blip, v.Blip.BlipScale)
-    	    Citizen.InvokeNative(0x9CB1A1623062F402, blip, v.Blip.BlipName)
-            table.insert(blips, blip)
-        end
-
-        -- NPC
-        local hashModel = GetHashKey(v.Npc.Model)
-        local npc = CreatePed(hashModel, v.Npc.Position.x, v.Npc.Position.y, v.Npc.Position.z - 1.0, v.Npc.Position.w, false, true, true, true)
-
-        if IsModelValid(hashModel) then
-            RequestModel(hashModel)
-            while not HasModelLoaded(hashModel) do
-                Wait(100)
-            end
-        end
-
-        if not v.Npc.Animation and v.Npc.Animation then
-            RequestAnimDict(v.Npc.Animation.AnimDict)
-            while not HasAnimDictLoaded(v.Npc.Animation.AnimDict) do
-                Citizen.Wait(100)
-            end
-            TaskPlayAnim(npc, v.Npc.Animation.AnimDict, v.Npc.Animation.AnimName, 1.0, -1.0, -1, 1, 0, true, 0, false, 0, false)
-        end
-
-        if v.Npc.Scale then
-            SetPedScale(npc, v.Npc.Scale)
-        end
-
-        SetEntityNoCollisionEntity(PlayerPedId(), npc, false)
-        SetEntityCanBeDamaged(npc, false)
-        SetEntityInvincible(npc, true)
-        FreezeEntityPosition(npc, true) -- NPC can't escape
-        SetBlockingOfNonTemporaryEvents(npc, true) -- NPC can't be scared
-        table.insert(peds, npc)
-	end
-end) ]]
-
-AddEventHandler("onResourceStop", function(resourceName)
-    if resourceName == GetCurrentResourceName() then
-        for k, v in pairs(blips) do
-            RemoveBlip(v)
-        end
-    end
-end)
