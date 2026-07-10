@@ -42,7 +42,7 @@ RegisterNetEvent("jr-wash:client:wash", function()
         PlayAnimation(Player, "amb_misc@world_human_wash_face_bucket@table@female_a@idle_d", "idle_j")
     end
 
-    Wait(3000)
+    Wait(12000)
     ClearPedEnvDirt(Player)
     ClearPedBloodDamage(Player)
     ClearPedDamageDecalByZone(Player, 10, "ALL")
@@ -60,6 +60,8 @@ if Config.UseProps then
         while true do
             local Player = PlayerPedId()
             local Coords = GetEntityCoords(Player)
+            local playerHorse = IsPedOnMount(Player)
+            local playerWagon = IsPedInAnyVehicle(Player, true)
             local Sleep = 1000
 
             for _, PropName in ipairs(Config.Props) do
@@ -75,32 +77,37 @@ if Config.UseProps then
 
                         PromptSetActiveGroupThisFrame(buttons_prompt, T.Wash)
                         if PromptHasHoldModeCompleted(Wash) then
-                            TaskTurnPedToFaceEntity(Player, Props, 1000)
-                            Wait(1100)
-                            if PropName.type == "barrel" then
-                                if IsPedMale(PlayerPedId()) then
-                                    PlayAnimation(PlayerPedId(), "mp_amb_player@prop_player_wash_face_barrel@sober@male_a@base", "base", 0)
-                                else
-                                    PlayAnimation(PlayerPedId(), "amb_misc@world_human_wash_face_bucket@table@female_a@idle_d", "idle_j", 0)
+                            if playerHorse or playerWagon then
+                                Wait(100)
+                                TriggerEvent("vorp:TipRight", T.OnHorseOrWagon, Config.TextTime)
+                            else
+                                TaskTurnPedToFaceEntity(Player, Props, 1000)
+                                Wait(1100)
+                                if PropName.type == "barrel" then
+                                    if IsPedMale(PlayerPedId()) then
+                                        PlayAnimation(PlayerPedId(), "mp_amb_player@prop_player_wash_face_barrel@sober@male_a@base", "base", 0)
+                                    else
+                                        PlayAnimation(PlayerPedId(), "amb_misc@world_human_wash_face_bucket@table@female_a@idle_d", "idle_j", 0)
+                                    end
+                                elseif PropName.type == "bucket" then
+                                    if IsPedMale(PlayerPedId()) then
+                                        TaskStartScenarioInPlace(Player, "WORLD_HUMAN_WASH_FACE_BUCKET_GROUND", 0, true)
+                                    else
+                                        TaskStartScenarioInPlace(Player, "WORLD_HUMAN_WASH_FACE_BUCKET_GROUND", 0, true)
+                                    end
                                 end
-                            elseif PropName.type == "bucket" then
-                                if IsPedMale(PlayerPedId()) then
-                                    TaskStartScenarioInPlace(Player, "WORLD_HUMAN_WASH_FACE_BUCKET_GROUND", 0, true)
-                                else
-                                    TaskStartScenarioInPlace(Player, "WORLD_HUMAN_WASH_FACE_BUCKET_GROUND", 0, true)
+
+                                Wait(Config.AnimationLenght)
+                                ClearPedEnvDirt(Player)
+                                ClearPedBloodDamage(Player)
+                                ClearPedDamageDecalByZone(Player, 10, "ALL")
+
+                                if Config.OutsiderNeeds then
+                                    TriggerEvent("Outsider_needs:Client:ClearDirt")
                                 end
+
+                                ClearPedTasks(Player)
                             end
-
-                            Wait(Config.AnimationLenght)
-                            ClearPedEnvDirt(Player)
-                            ClearPedBloodDamage(Player)
-                            ClearPedDamageDecalByZone(Player, 10, "ALL")
-
-                            if Config.OutsiderNeeds then
-                                TriggerEvent("Outsider_needs:Client:ClearDirt")
-                            end
-
-                            ClearPedTasks(Player)
                         end
                     end
                 end

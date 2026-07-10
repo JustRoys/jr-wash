@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Debug = true                         -- Set true to enable debug mode
+Config.Debug = false                         -- Set true to enable debug mode
 
 Config.Language = "English"                 -- English, Dutch
 
